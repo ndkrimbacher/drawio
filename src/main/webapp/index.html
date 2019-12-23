@@ -9,7 +9,7 @@
     <meta name="Keywords" content="diagram, online, flow chart, flowchart maker, uml, erd">
     <meta itemprop="name" content="draw.io - free flowchart maker and diagrams online">
 	<meta itemprop="description" content="draw.io is a free online diagramming application  and flowchart maker . You can use it to create UML, entity relationship,
-		org charts, BPMN and BPM, database schema and networks. Also possible are telecommunication network, workflow, flowcharts, maps overlays and GIS, electronic 
+		org charts, BPMN and BPM, database schema and networks. Also possible are telecommunication network, workflow, flowcharts, maps overlays and GIS, electronic
 		circuit and social network diagrams.">
 	<meta itemprop="image" content="https://lh4.googleusercontent.com/-cLKEldMbT_E/Tx8qXDuw6eI/AAAAAAAAAAs/Ke0pnlk8Gpg/w500-h344-k/BPMN%2Bdiagram%2Brc2f.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -47,27 +47,27 @@
 		{
 			var result = new Object();
 			var params = window.location.search.slice(1).split('&');
-			
+
 			for (var i = 0; i < params.length; i++)
 			{
 				idx = params[i].indexOf('=');
-				
+
 				if (idx > 0)
 				{
 					result[params[i].substring(0, idx)] = params[i].substring(idx + 1);
 				}
 			}
-			
+
 			return result;
 		})();
-		
+
 		// Forces CDN caches by passing URL parameters via URL hash
 		if (window.location.hash != null && window.location.hash.substring(0, 2) == '#P')
 		{
 			try
 			{
 				urlParams = JSON.parse(decodeURIComponent(window.location.hash.substring(2)));
-				
+
 				if (urlParams.hash != null)
 				{
 					window.location.hash = urlParams.hash;
@@ -78,28 +78,28 @@
 				// ignore
 			}
 		}
-		
+
 		// Redirects page if required
 		if (urlParams['dev'] != '1')
 		{
 			(function()
 			{
 				var proto = window.location.protocol;
-				
+
 				if (!mxIsElectron)
 				{
 					var host = window.location.host;
-		
+
 					// Redirects apex and rt to www
 					if (host === 'draw.io' || host === 'rt.draw.io')
 					{
 						host = 'www.draw.io';
 					}
-					
+
 					var href = proto + '//' + host + window.location.href.substring(
 							window.location.protocol.length +
 							window.location.host.length + 2);
-		
+
 					// Redirects if href changes
 					if (href != window.location.href)
 					{
@@ -113,7 +113,7 @@
 				}
 			})();
 		}
-		
+
 		/**
 		 * Adds meta tags with application name (depends on offline URL parameter)
 		 */
@@ -124,15 +124,15 @@
 				try
 				{
 					var s = document.createElement('meta');
-					
-					if (name != null) 
+
+					if (name != null)
 					{
 						s.setAttribute('name', name);
 					}
 
 					s.setAttribute('content', content);
-					
-					if (httpEquiv != null) 
+
+					if (httpEquiv != null)
 					{
 						s.setAttribute('http-equiv', httpEquiv);
 					}
@@ -145,14 +145,14 @@
 					// ignore
 				}
 			};
-			
+
 			var name = 'draw.io';
 
 			if (urlParams['offline'] === '1')
 			{
 				name += ' app';
 			}
-			
+
 			addMeta('apple-mobile-web-app-title', name);
 			addMeta('application-name', name);
 
@@ -273,17 +273,17 @@
 				s.setAttribute('type', 'text/javascript');
 				s.setAttribute('src', src);
 				var r = false;
-				
+
 				if (id != null)
 				{
 					s.setAttribute('id', id);
 				}
-				
+
 				if (dataAppKey != null)
 				{
 					s.setAttribute('data-app-key', dataAppKey);
 				}
-				
+
 				if (onLoad != null)
 				{
 					s.onload = s.onreadystatechange = function()
@@ -295,9 +295,9 @@
 						}
 				  	};
 				}
-			  	
+
 			  	var t = document.getElementsByTagName('script')[0];
-			  	
+
 			  	if (t != null)
 			  	{
 			  		t.parentNode.insertBefore(s, t);
@@ -318,10 +318,10 @@
 			var g = document.createElement('script'); g.type = 'text/javascript'; g.async = true; g.src = src;
 		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(g, s);
 		};
-		
+
 		// Checks for local storage
 		var isLocalStorage = false;
-		
+
 		try
 		{
 			isLocalStorage = urlParams['local'] != '1' && typeof(localStorage) != 'undefined';
@@ -338,27 +338,27 @@
 		{
 			// Used to request grapheditor/mxgraph sources in dev mode
 			var mxDevUrl = document.location.protocol + '//devhost.jgraph.com/mxgraph2';
-			
+
 			// Used to request draw.io sources in dev mode
 			var drawDevUrl = document.location.protocol + '//devhost.jgraph.com/drawio/src/main/webapp/';
-			
+
 			if (document.location.protocol == 'file:')
 			{
 				mxDevUrl = '../../../../../mxgraph2';
 				drawDevUrl = './';
-				
+
 				// Forces includes for dev environment in node.js
 				mxForceIncludes = true;
 			}
 
 			var geBasePath = mxDevUrl + '/javascript/examples/grapheditor/www/js';
 			var mxBasePath = mxDevUrl + '/javascript/src';
-			
+
 			mxscript(drawDevUrl + 'js/PreConfig.js');
 			mxscript(drawDevUrl + 'js/diagramly/Init.js');
 			mxscript(geBasePath + '/Init.js');
 			mxscript(mxDevUrl + '/javascript/src/js/mxClient.js');
-			
+
 			// Adds all JS code that depends on mxClient. This indirection via Devel.js is
 			// required in some browsers to make sure mxClient.js (and the files that it
 			// loads asynchronously) are available when the code loaded in Devel.js runs.
@@ -371,9 +371,9 @@
 			{
 				mxscript('js/PreConfig.js');
 			}
-			
+
 			mxscript('js/app.min.js');
-			
+
 			if (!supportedDomain)
 			{
 				mxscript('js/PostConfig.js');
@@ -391,12 +391,12 @@
 			mxscript('js/shapes.min.js');
 			mxscript('js/PostConfig.js');
 		}
-		
+
 		// Adds basic error handling
 		window.onerror = function()
 		{
 			var status = document.getElementById('geStatus');
-			
+
 			if (status != null)
 			{
 				status.innerHTML = 'Page could not be loaded. Please try refreshing.';
@@ -409,7 +409,7 @@
 	<div class="geBlock" style="text-align:center;min-width:50%;">
 		<h1>Flowchart Maker and Online Diagram Software</h1>
 		<p>
-			draw.io (formerly Diagramly) is free online diagram software. You can use it as a flowchart maker, network diagram software, to create UML online, as an ER diagram tool, 
+			draw.io (formerly Diagramly) is free online diagram software. You can use it as a flowchart maker, network diagram software, to create UML online, as an ER diagram tool,
 			to design database schema, to build BPMN online, as a circuit diagram maker, and more. draw.io can import .vsdx, Gliffy&trade; and Lucidchart&trade; files .
 		</p>
 		<h2 id="geStatus">Loading...</h2>
@@ -457,7 +457,22 @@
 /**
  * Main
  */
-App.main();
+App.main(function(ui) { window.editorUi = ui; });
+
+const ipc = require('electron').ipcRenderer;
+
+// listen to load-svg events
+ipc.on('load-svg', (event, data) => {
+    const svgText = decodeURIComponent(escape(atob(data)));
+    const root = mxUtils.parseXml(svgText);
+    const svgs = root.getElementsByTagName('svg');
+    if (svgs.length > 0) {
+      const cont = svgs[0].getAttribute('content');
+      const doc = mxUtils.parseXml(cont);
+      editorUi.editor.setGraphXml(doc.documentElement);
+    }
+});
+
 </script>
 </body>
 </html>
