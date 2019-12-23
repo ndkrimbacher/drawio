@@ -457,9 +457,21 @@
 /**
  * Main
  */
-App.main(function(ui) { window.editorUi = ui; });
-
 const ipc = require('electron').ipcRenderer;
+ 
+App.main(function(ui) {
+  // overwrite save function
+  ui.actions.get('save').funct = function() {
+    const svgRoot = editorUi.editor.graph.getSvg();
+    svgRoot.setAttribute('content', editorUi.getFileData());
+    const svg = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+        '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
+        mxUtils.getXml(svgRoot);
+    ipc.send('save-svg', svg);
+  };
+
+  window.editorUi = ui;
+});
 
 // listen to load-svg events
 ipc.on('load-svg', (event, data) => {
@@ -472,7 +484,6 @@ ipc.on('load-svg', (event, data) => {
       editorUi.editor.setGraphXml(doc.documentElement);
     }
 });
-
 </script>
 </body>
 </html>
