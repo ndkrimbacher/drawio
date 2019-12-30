@@ -458,7 +458,7 @@
  * Main
  */
 const ipc = require('electron').ipcRenderer;
- 
+
 App.main(function(ui) {
   // overwrite save function
   ui.actions.get('save').funct = function() {
@@ -467,7 +467,9 @@ App.main(function(ui) {
     const svg = '<?xml version="1.0" encoding="UTF-8"?>\n' +
         '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
         mxUtils.getXml(svgRoot);
-    ipc.send('save-svg', svg);
+    const fileName = editorUi.getCurrentFile().getTitle() + '.svg';
+    const data = [ window.noteId, window.fileId, fileName, btoa(svg) ].join(',');
+    ipc.send('save-svg', data);
   };
 
   window.editorUi = ui;
@@ -475,15 +477,34 @@ App.main(function(ui) {
 
 // listen to load-svg events
 ipc.on('load-svg', (event, data) => {
-    const svgText = decodeURIComponent(escape(atob(data)));
+    const [ noteId, fileId, fileName, fileData ] = data.split(',');
+    window.noteId = noteId;
+    window.fileId = fileId;
+
+    // load svg
+    const svgText = decodeURIComponent(escape(atob(fileData)));
     const root = mxUtils.parseXml(svgText);
     const svgs = root.getElementsByTagName('svg');
     if (svgs.length > 0) {
-      const cont = svgs[0].getAttribute('content');
-      const doc = mxUtils.parseXml(cont);
-      editorUi.editor.setGraphXml(doc.documentElement);
+      const content = svgs[0].getAttribute('content');
+      editorUi.setFileData(content)
     }
-});
+
+    // set title and set saved status
+    const drawIOFile = editorUi.getCurrentFile()
+    drawIOFile.rename(fileName.replace('.svg', ''));
+    drawIOFile.addAllSavedStatus()
+  });
+
+  // listen to load-svg events
+  ipc.on('saved', (event, fileId) => {
+    // update fileId
+    window.fileId = fileId;
+
+    // set saved status
+    const drawIOFile = editorUi.getCurrentFile()
+    drawIOFile.addAllSavedStatus()
+  });
 </script>
 </body>
 </html>
